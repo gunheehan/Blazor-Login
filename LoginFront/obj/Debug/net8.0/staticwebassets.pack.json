@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/obj/Debug/net8.0/scopedcss/projectbundle/LoginFront.bundle.scp.css",
+      "PackagePath": "staticwebassets/LoginFront.bundle.scp.css"
+    },
+    {
+      "Id": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/wwwroot/app.css",
+      "PackagePath": "staticwebassets/app.css"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.LoginFront.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.LoginFront.props",
+      "PackagePath": "build\\LoginFront.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.LoginFront.props",
+      "PackagePath": "buildMultiTargeting\\LoginFront.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.LoginFront.props",
+      "PackagePath": "buildTransitive\\LoginFront.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

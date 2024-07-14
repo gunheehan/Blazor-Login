@@ -1,0 +1,49 @@
+﻿@page "/"
+@inject UserClient Client
+@using LoginFront.Clients
+@using LoginFront.models
+@attribute [StreamRendering]
+
+<PageTitle>Login</PageTitle>
+
+@* <div class="mt-2"> *@
+@*     <a class="btn btn-primary" role="button" href="/loginpage">Login</a> *@
+@* </div> *@
+
+@if (users is null)
+{
+    <p><em>Loading....</em></p>
+}
+
+else
+{
+    <table class="table table-scriped table-bordered table-hover mt-3">
+        <thead class="table-dark">
+        <th>Id</th>
+        <th>Nickname</th>
+        <th>Email</th>
+        </thead>
+    
+        <tbody>
+        @foreach (var user in users)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Nickname</td>
+                <td>@user.Email</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code
+{
+    private UserSummary[]? users;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        users = Client.GetUsers;
+    }
+}

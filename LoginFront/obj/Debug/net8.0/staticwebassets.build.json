@@ -1,0 +1,77 @@
+{
+  "Version": 1,
+  "Hash": "cI4nImMWVe5QYRjeglcMUNNbigp8QFgewYyWuwS6lSQ=",
+  "Source": "LoginFront",
+  "BasePath": "_content/LoginFront",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "LoginFront/wwwroot",
+      "Source": "LoginFront",
+      "ContentRoot": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/wwwroot/",
+      "BasePath": "_content/LoginFront",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/obj/Debug/net8.0/scopedcss/bundle/LoginFront.styles.css",
+      "SourceId": "LoginFront",
+      "SourceType": "Computed",
+      "ContentRoot": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/obj/Debug/net8.0/scopedcss/bundle/",
+      "BasePath": "_content/LoginFront",
+      "RelativePath": "LoginFront.styles.css",
+      "AssetKind": "All",
+      "AssetMode": "CurrentProject",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ApplicationBundle",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/obj/Debug/net8.0/scopedcss/bundle/LoginFront.styles.css"
+    },
+    {
+      "Identity": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/obj/Debug/net8.0/scopedcss/projectbundle/LoginFront.bundle.scp.css",
+      "SourceId": "LoginFront",
+      "SourceType": "Computed",
+      "ContentRoot": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/obj/Debug/net8.0/scopedcss/projectbundle/",
+      "BasePath": "_content/LoginFront",
+      "RelativePath": "LoginFront.bundle.scp.css",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ProjectBundle",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/obj/Debug/net8.0/scopedcss/projectbundle/LoginFront.bundle.scp.css"
+    },
+    {
+      "Identity": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/wwwroot/app.css",
+      "SourceId": "LoginFront",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/wwwroot/",
+      "BasePath": "_content/LoginFront",
+      "RelativePath": "app.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/app.css"
+    }
+  ]
+}

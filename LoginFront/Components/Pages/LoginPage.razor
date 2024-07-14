@@ -1,0 +1,77 @@
+@page "/loginpage"
+@page "/loginpage/{id:int}"
+
+@inject NavigationManager NavigationManater
+@inject UserClient Client
+@using LoginFront.Clients
+
+<PageTitle>Login</PageTitle>
+<h3>로그인</h3>
+
+@if (user is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-6">
+            <EditForm Model="@user" FormName="login" OnValidSubmit="HandleSubmit">
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+                <form>
+                    <div class="mb-3">
+                        <label for="nickname" class="form-label">Nickname:</label>
+                        <InputText id="nickname" @bind-Value="user.Nickname" class="form-control"/>
+                        <ValidationMessage For="()=>user.Nickname"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <InputText id="email" @bind-Value="user.Email" class="form-control"/>
+                        <ValidationMessage For="()=>user.Email"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">로 그 인</button>
+                </form>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private UserDetails? user { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (user is not null)
+        {
+            return;
+        }
+        
+        if (Id is not null)
+        {
+            user = Client.GetUser(Id.Value);
+        }
+        else
+        {
+            user = new()
+            {
+                Nickname = string.Empty,
+                Email = string.Empty
+            };
+        }
+    }
+
+    private void HandleSubmit()
+    {
+        ArgumentNullException.ThrowIfNull(user);
+        Client.AddUser(user);
+        NavigationManater.NavigateTo("/");
+    }
+
+}
