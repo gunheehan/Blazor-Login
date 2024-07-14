@@ -1,10 +1,12 @@
+using Login.Api.Data;
 using Login.Api.EndPoints;
-using Login.Api.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddScoped<ISignRepository, InMemSignRepository>();
+builder.Services.AddRespositories(builder.Configuration);
 
 var app = builder.Build();
+
+app.Services.InitializeDb();
 
 app.MapSignEndpoints();
 
