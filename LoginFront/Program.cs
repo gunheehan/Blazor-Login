@@ -11,8 +11,6 @@ var userApiUrl = builder.Configuration["userApiUrl"] ??
 
 builder.Services.AddHttpClient<UserClient>(client => client.BaseAddress = new Uri(userApiUrl));
 
-builder.Services.AddSingleton<UserClient>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
