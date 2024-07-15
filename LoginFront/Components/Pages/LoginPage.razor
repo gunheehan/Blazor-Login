@@ -1,12 +1,16 @@
-@page "/loginpage"
-@page "/loginpage/{id:int}"
+@page "/signIn"
+@page "/signIn/{id:int}"
 
-@inject NavigationManager NavigationManater
-@inject UserClient Client
 @using LoginFront.Clients
+@using LoginFront.models
+
+@inject UserClient Client
+@inject NavigationManager NavigationManager
+
+@rendermode InteractiveServer
 
 <PageTitle>Login</PageTitle>
-<h3>로그인</h3>
+<h3>@title</h3>
 
 @if (user is null)
 {
@@ -15,8 +19,8 @@
 else
 {
     <div class="row">
-        <div class="col-md-6">
-            <EditForm Model="@user" FormName="login" OnValidSubmit="HandleSubmit">
+        <div class="col-md-4">
+            <EditForm Model="@user" FormName="login" OnValidSubmit="HandleSubmitAsync" Enhance>
                 <DataAnnotationsValidator/>
                 <ValidationSummary/>
                 <form>
@@ -30,7 +34,8 @@ else
                         <InputText id="email" @bind-Value="user.Email" class="form-control"/>
                         <ValidationMessage For="()=>user.Email"/>
                     </div>
-                    <button type="submit" class="btn btn-primary">로 그 인</button>
+                    <button type="submit" class="btn btn-primary">@buttonString</button>
+                    <a role="button" class="btn btn-secondary" href="/">Cancel</a>
                 </form>
             </EditForm>
         </div>
@@ -42,12 +47,19 @@ else
     public int? Id { get; set; }
 
     [SupplyParameterFromForm]
-    private UserDetails? user { get; set; }
+    private UserSummary? user { get; set; }
+    
+    private string title = string.Empty;
+    private string buttonString = string.Empty;
 
-    protected override void OnParametersSet()
+    protected override void OnInitialized()
     {
-        base.OnParametersSet();
+        base.OnInitialized();
+        System.Diagnostics.Debug.WriteLine("login page loaded");
+    }
 
+    protected override async Task OnParametersSetAsync()
+    {
         if (user is not null)
         {
             return;
@@ -55,7 +67,9 @@ else
         
         if (Id is not null)
         {
-            user = Client.GetUser(Id.Value);
+            user = await Client.GetUserAsync(Id.Value);
+            title = $"Edit User Info : {user.Nickname}";
+            buttonString = "Edit";
         }
         else
         {
@@ -64,14 +78,26 @@ else
                 Nickname = string.Empty,
                 Email = string.Empty
             };
+            title = "login";
+            buttonString = "login";
         }
     }
 
-    private void HandleSubmit()
+    private async Task HandleSubmitAsync()
     {
         ArgumentNullException.ThrowIfNull(user);
-        Client.AddUser(user);
-        NavigationManater.NavigateTo("/");
-    }
 
+        if (Id is null)
+        {
+            await Client.AddUserAsync(user);
+        }
+        else
+        {
+            user.Id = Id.Value;
+            await Client.UpdateUserAsync(user);
+        }
+        
+        System.Diagnostics.Debug.WriteLine("OnClick move");
+        NavigationManager.NavigateTo("/");
+    }
 }

@@ -2,48 +2,21 @@ using LoginFront.models;
 
 namespace LoginFront.Clients;
 
-public class UserClient
+public class UserClient(HttpClient httpClient)
 {
-    private readonly List<UserSummary> users =
-    [
-        new()
-        {
-            Id = 1,
-            Nickname = "gun",
-            Email = "gungun@gun.com"
-        },
-        new()
-        {
-            Id = 2,
-            Nickname = "hea",
-            Email = "heahea@hea.com"
-        }
-    ];
+    public async Task<UserSummary[]> GetUsersAsync()
+     => await httpClient.GetFromJsonAsync<UserSummary[]>("Logins") ?? [];
 
-    public UserSummary[] GetUsers => users.ToArray();
+    public async Task AddUserAsync(UserSummary user)
+        => await httpClient.PostAsJsonAsync("logins", user);
 
-    public void AddUser(UserDetails user)
-    {
-        var userSummary = new UserSummary()
-        {
-            Id = users.Count + 1,
-            Nickname = user.Nickname,
-            Email = user.Email
-        };
-        
-        users.Add(userSummary);
-    }
+    public async Task UpdateUserAsync(UserSummary updateUser)
+        => await httpClient.PutAsJsonAsync($"Logins/{updateUser.Id}", updateUser);
 
-    public UserDetails GetUser(int id)
-    {
-        UserSummary? user = users.Find(user => user.Id == id);
-        ArgumentNullException.ThrowIfNull(user);
+    public async Task DeleteUserAsync(int id)
+        => await httpClient.DeleteAsync($"Logins/{id}");
 
-        return new UserDetails()
-        {
-            Id = user.Id,
-            Nickname = user.Nickname,
-            Email = user.Email
-        };
-    }
+    public async Task<UserSummary> GetUserAsync(int id)
+        => await httpClient.GetFromJsonAsync<UserSummary>($"Logins/{id}") ??
+           throw new Exception("not find : " + id);
 }

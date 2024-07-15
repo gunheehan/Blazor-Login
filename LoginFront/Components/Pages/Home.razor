@@ -6,15 +6,14 @@
 
 <PageTitle>Login</PageTitle>
 
-@* <div class="mt-2"> *@
-@*     <a class="btn btn-primary" role="button" href="/loginpage">Login</a> *@
-@* </div> *@
+<div class="mt-2">
+    <a class="btn btn-primary" role="button" href="/loginpage">Login</a>
+</div>
 
 @if (users is null)
 {
     <p><em>Loading....</em></p>
 }
-
 else
 {
     <table class="table table-scriped table-bordered table-hover mt-3">
@@ -22,6 +21,7 @@ else
         <th>Id</th>
         <th>Nickname</th>
         <th>Email</th>
+        <th>Edit</th>
         </thead>
     
         <tbody>
@@ -31,6 +31,17 @@ else
                 <td>@user.Id</td>
                 <td>@user.Nickname</td>
                 <td>@user.Email</td>
+                <td>
+                    <div>
+                        <a class="btn btn-primary me -2" role="button" href="@UserUrl(user.Id)">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@GetDeleteMoalId(user)">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                    <DeleteModal User="@user"/>
+                </td>
             </tr>
         }
         </tbody>
@@ -41,9 +52,16 @@ else
 {
     private UserSummary[]? users;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
-        users = Client.GetUsers;
+        users = await Client.GetUsersAsync();
+    }
+    
+    private static string UserUrl(int id) => $"/signIn/{id}";
+
+    private string GetDeleteMoalId(UserSummary user)
+    {
+        System.Diagnostics.Debug.WriteLine("OnClick Delete");
+        return $"#{DeleteModal.GetModalId(user)}";
     }
 }
