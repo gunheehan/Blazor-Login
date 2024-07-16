@@ -1,133 +1,33 @@
 @page "/gallery"
-@using System.Net.Mime
-@* @inject IConfiguration config *@
-@* *@
-@* <PageTitle>Gallery</PageTitle> *@
-@* <h1>Gallery</h1> *@
-@* *@
-@* <InputFile OnChange="@LoadFiles" multiple /> *@
-@* *@
-@* @if (errors.Count > 0) *@
-@* { *@
-@* <h2>Errors</h2> *@
-@* <ul class="text-danger"> *@
-@*     @foreach (var error in errors) *@
-@*     { *@
-@*     <li>@error</li> *@
-@*     } *@
-@* </ul> *@
-@* } *@
-@* *@
-@* <div> *@
-@*     <div> *@
-@*         @if (!string.IsNullOrWhiteSpace(uploadedImageUrl)) *@
-@*         { *@
-@*         <img src="@uploadedImageUrl" class="img-fluid"/> *@
-@*         }  *@
-@*     </div> *@
-@* </div> *@
-@* *@
-@* *@
-@* @code { *@
-@*     private long maxFileSize = 1024 * 1024 * 3; *@
-@*     private int maxAllowedFiles = 3; *@
-@*     private List<string> errors = new(); *@
-@*      *@
-@*     private string? uploadedImageUrl; *@
-@*      *@
-@*     private async Task LoadFiles(InputFileChangeEventArgs e) *@
-@*     { *@
-@*         errors.Clear(); *@
-@* *@
-@*         if (e.FileCount > maxAllowedFiles) *@
-@*         { *@
-@*             errors.Add($"Error : Attempting to upload{e.FileCount}"); *@
-@*             return; *@
-@*         } *@
-@* *@
-@*         foreach (var file in e.GetMultipleFiles(maxAllowedFiles)) *@
-@*         { *@
-@*             try *@
-@*             { *@
-@*                 string newFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name)); *@
-@* *@
-@*                 string path = Path.Combine(config.GetValue<string>("FileStorage")!, "tcorey", newFileName); *@
-@* *@
-@*                 Directory.CreateDirectory(Path.Combine(config.GetValue<string>("FileStorage")!, "tcorey")); *@
-@* *@
-@*                 await using FileStream fs = new(path, FileMode.Create); *@
-@*                 await file.OpenReadStream().CopyToAsync(fs); *@
-@* *@
-@*                 using var uploadFileStream = file.OpenReadStream(); *@
-@*                 await uploadFileStream.CopyToAsync(fs); *@
-@*                 uploadedImageUrl = file.Name; *@
-@*             } *@
-@*             catch (Exception ex) *@
-@*             { *@
-@*                 errors.Add($"File: {file.Name} Error: {ex.Message}"); *@
-@*             } *@
-@*         } *@
-@*     } *@
-@* } *@
-
-@inject IWebHostEnvironment WebHotEviroment
+@inject IJSRuntime js
 
 <PageTitle>Gallery</PageTitle>
 
-<div class="container" d-flex>
-    <div class="col-sm-4 mx=auto">
-        <EditForm Model="Model" enctype="multipart/form-data" Enhance FormName="file-form" OnSubmit="SaveFileModelAsync">
-            <div class="mb-3">
-                <label class="form-label">Name</label>
-                <InputText @bind-Value="Model.Name" class="form-control"/>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">File</label>
-                <InputFile name ="Model.File" accept =".png,.jpg,.jpeg" class="form-control"/>
-            </div>
-            <div class="mb-3">
-                <input type="submit" class="btn btn-sm btn-success" value="Submit">
-            </div>
-        </EditForm>
-        @if (!string.IsNullOrWhiteSpace(uploadedImageUrl))
-        {
-            <img src="@uploadedImageUrl" class="img-fluid"/>
-        }
-    </div>
-</div>
+<h1>Gallery</h1>
+
+<InputFile class="form-control" OnChange="OnFileChange"></InputFile>
 
 @code{
-    [SupplyParameterFromForm(FormName = "file-form")]
-    private FileModel Model { get; set; } = new FileModel();
 
-    private string? uploadedImageUrl;
-
-    private async Task SaveFileModelAsync()
+    async Task OnFileChange(InputFileChangeEventArgs e)
     {
-        var file = Model.File;
-        var folderPath = Path.Combine(WebHotEviroment.WebRootPath, "uploads");
-        Directory.CreateDirectory(folderPath);
-        
-        var filePath = Path.Combine(folderPath, file.FileName);
+        if (e.File.Name.Contains(".png"))
+        {
+            var format = "image/png";
 
-        try
-        {
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                using var uploadRileStream = file.OpenReadStream();
-                await uploadRileStream.CopyToAsync(fileStream);
-                uploadedImageUrl = $"/uploads/{file.FileName}";
-            }
+            var resizeImage = await e.File.RequestImageFileAsync(format, 30, 300);
+            var buffer = new byte[resizeImage.Size];
+            await resizeImage.OpenReadStream().ReadAsync(buffer);
+            var imageData = $"data:{format}base64,{Convert.ToBase64String(buffer)}";
+
+            await js.InvokeVoidAsync("alert", imageData);
         }
-        catch (Exception e)
+
+        else
         {
-            Console.WriteLine(e.Message);
+            await js.InvokeVoidAsync("alert", "Wrong format selected");
         }
+
     }
-    
-    private class FileModel
-    {
-        public string Name { get; set; }
-        public IFormFile File { get; set; }
-    }
+
 }
