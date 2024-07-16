@@ -23,6 +23,11 @@ public class EntityFrameworkLoginsRepository : ISignRepository
         return dbContext.LoginInfos.Find(id);
     }
 
+    public LoginInfo GetUser(string email)
+    {
+        return dbContext.LoginInfos.Find(email);
+    }
+
     public void Create(LoginInfo newInfo)
     {
         dbContext.LoginInfos.Add(newInfo);

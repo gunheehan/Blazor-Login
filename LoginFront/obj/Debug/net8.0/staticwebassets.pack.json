@@ -9,6 +9,26 @@
       "PackagePath": "staticwebassets/app.css"
     },
     {
+      "Id": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/wwwroot/uploads/(최종본)#21125북가좌동한양플러스.pdf",
+      "PackagePath": "staticwebassets/uploads/(최종본)#21125북가좌동한양플러스.pdf"
+    },
+    {
+      "Id": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/wwwroot/uploads/1.PNG",
+      "PackagePath": "staticwebassets/uploads/1.PNG"
+    },
+    {
+      "Id": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/wwwroot/uploads/4.PNG",
+      "PackagePath": "staticwebassets/uploads/4.PNG"
+    },
+    {
+      "Id": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/wwwroot/uploads/404.pdf",
+      "PackagePath": "staticwebassets/uploads/404.pdf"
+    },
+    {
+      "Id": "/Users/gunhee/Documents/GitHub/Blazor-Login/LoginFront/wwwroot/uploads/다운로드.jpeg",
+      "PackagePath": "staticwebassets/uploads/다운로드.jpeg"
+    },
+    {
       "Id": "obj/Debug/net8.0/staticwebassets/msbuild.LoginFront.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

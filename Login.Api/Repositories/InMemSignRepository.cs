@@ -30,6 +30,11 @@ public class InMemSignRepository : ISignRepository
         return info.Find(info => info.Id == id);
     }
 
+    public LoginInfo GetUser(string email)
+    {
+        return info.Find(info => info.Email == email);
+    }
+
     public void Create(LoginInfo newInfo)
     {
         newInfo.Id = info.Max(loginInfo => loginInfo.Id) + 1;

@@ -6,6 +6,7 @@ public interface ISignRepository
 {
     IEnumerable<LoginInfo> GetAll();
     LoginInfo Get(int id);
+    LoginInfo GetUser(string email);
     void Create(LoginInfo newInfo);
     void Update(LoginInfo updateInfo);
     void Delete(int id);

@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "SCGtpx6RjxM=",
+  "dgSpecHash": "hgFTf/v97+aB2DmKKPgypPgJC2PDylua3WqBb1RErqm/OmYCHxq9WW7ZRiedk1Dt2BVgzCWfXe5SOX1k8FdSXg==",
   "success": true,
   "projectFilePath": "/Users/gunhee/Documents/GitHub/Blazor-Login/Login.Api/Login.Api.csproj",
   "expectedPackageFiles": [
     "/Users/gunhee/.nuget/packages/azure.core/1.38.0/azure.core.1.38.0.nupkg.sha512",
     "/Users/gunhee/.nuget/packages/azure.identity/1.11.3/azure.identity.1.11.3.nupkg.sha512",
+    "/Users/gunhee/.nuget/packages/dapper/2.1.35/dapper.2.1.35.nupkg.sha512",
     "/Users/gunhee/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/gunhee/.nuget/packages/microsoft.bcl.asyncinterfaces/7.0.0/microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
     "/Users/gunhee/.nuget/packages/microsoft.build.framework/16.10.0/microsoft.build.framework.16.10.0.nupkg.sha512",

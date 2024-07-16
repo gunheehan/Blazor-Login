@@ -26,6 +26,19 @@ public static class LoginEndpoints
 
         group.MapPost("/", (ISignRepository repository, CreateUserDto userDto) =>
         {
+            LoginInfo? existingInfo = repository.GetUser(userDto.Email);
+
+            if (existingInfo is not null)
+            {
+                if (!existingInfo.Nickname.Equals(userDto.Nickname))
+                {
+                    existingInfo.Nickname = userDto.Nickname;
+                    repository.Update(existingInfo);
+                }
+
+                return Results.Ok(existingInfo);
+            }
+            
             LoginInfo loginInfo = new()
             {
                 Nickname = userDto.Nickname,

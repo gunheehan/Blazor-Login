@@ -1,14 +1,12 @@
-﻿@page "/"
+﻿@page "/home"
 @inject UserClient Client
+@inject NavigationManager Navigation
+@inject IWebHostEnvironment WebHotEviroment
 @using LoginFront.Clients
 @using LoginFront.models
 @attribute [StreamRendering]
 
 <PageTitle>Login</PageTitle>
-
-<div class="mt-2">
-    <a class="btn btn-primary" role="button" href="/signIn">Login</a>
-</div>
 
 @if (users is null)
 {
@@ -25,6 +23,11 @@ else
         </thead>
     
         <tbody>
+        <tr>
+            <td>@ClientInfo.userinfo.Id</td>
+            <td>@ClientInfo.userinfo.Nickname</td>
+            <td>@ClientInfo.userinfo.Email</td>
+        </tr>
         @foreach (var user in users)
         {
             <tr>
@@ -33,9 +36,6 @@ else
                 <td>@user.Email</td>
                 <td>
                     <div>
-                        <a class="btn btn-primary me -2" role="button" href="@UserUrl(user.Id)">
-                            <i class="bi bi-pencil"></i>
-                        </a>
                         <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@GetDeleteMoalId(user)">
                             <i class="bi bi-x-lg"></i>
                         </button>
@@ -46,6 +46,34 @@ else
         }
         </tbody>
     </table>
+    
+    <div class="mt-2">
+        <a class="btn btn-primary" role="button" style="float: right" onsubmit="OnClickLogout">Logout</a>
+    </div>
+    
+    <h1>File Upload Test</h1>
+    
+    <div class="container" d-flex>
+        <div class="col-sm-4 mx=auto">
+            <EditForm Model="Model" enctype="multipart/form-data" Enhance FormName="file-form" OnSubmit="SaveFileModelAsync">
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <InputText @bind-Value="Model.Name" class="form-control"/>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">File</label>
+                    <InputFile name ="Model.File" class="form-control"/>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" class="btn btn-sm btn-success" value="Submit">
+                </div>
+            </EditForm>
+            @if (!string.IsNullOrWhiteSpace(uploadedImageUrl))
+            {
+                <img src="@uploadedImageUrl" class="img-fluid"/>
+            }
+        </div>
+    </div>
 }
 
 @code
@@ -54,14 +82,54 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        if(ClientInfo.userinfo is null)
+            Navigation.NavigateTo("/");
+
         users = await Client.GetUsersAsync();
     }
     
-    private static string UserUrl(int id) => $"/signIn/{id}";
-
     private string GetDeleteMoalId(UserSummary user)
     {
         System.Diagnostics.Debug.WriteLine("OnClick Delete");
         return $"#{DeleteModal.GetModalId(user)}";
+    }
+
+    private void OnClickLogout()
+    {
+        ClientInfo.userinfo = null;
+        Navigation.NavigateTo("/");
+    }
+[SupplyParameterFromForm(FormName = "file-form")]
+    private FileModel Model { get; set; } = new FileModel();
+
+    private string? uploadedImageUrl;
+
+    private async Task SaveFileModelAsync()
+    {
+        var file = Model.File;
+        var folderPath = Path.Combine(WebHotEviroment.WebRootPath, "uploads");
+        Directory.CreateDirectory(folderPath);
+        
+        var filePath = Path.Combine(folderPath, file.FileName);
+
+        try
+        {
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                using var uploadRileStream = file.OpenReadStream();
+                await uploadRileStream.CopyToAsync(fileStream);
+                uploadedImageUrl = $"/uploads/{file.FileName}";
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
+    
+    private class FileModel
+    {
+        public string Name { get; set; }
+        public IFormFile File { get; set; }
     }
 }
