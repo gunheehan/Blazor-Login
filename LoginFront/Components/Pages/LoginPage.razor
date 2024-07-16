@@ -20,23 +20,24 @@ else
 {
     <div class="row">
         <div class="col-md-4">
-            <EditForm Model="@user" FormName="login" OnValidSubmit="HandleSubmitAsync" Enhance>
+            <EditForm Model="@user" 
+                      FormName="login" 
+                      OnValidSubmit="HandleSubmitAsync"
+                      Enhance>
                 <DataAnnotationsValidator/>
                 <ValidationSummary/>
-                <form>
-                    <div class="mb-3">
-                        <label for="nickname" class="form-label">Nickname:</label>
-                        <InputText id="nickname" @bind-Value="user.Nickname" class="form-control"/>
-                        <ValidationMessage For="()=>user.Nickname"/>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email:</label>
-                        <InputText id="email" @bind-Value="user.Email" class="form-control"/>
-                        <ValidationMessage For="()=>user.Email"/>
-                    </div>
-                    <button type="submit" class="btn btn-primary">@buttonString</button>
-                    <a role="button" class="btn btn-secondary" href="/">Cancel</a>
-                </form>
+                <div class="mb-3">
+                    <label for="Nickname" class="form-label">Nickname:</label>
+                    <InputText id="Nickname" @bind-Value="user.Nickname" class="form-control"/>
+                    <ValidationMessage For="()=>user.Nickname" />
+                </div>
+                <div class="mb-3">
+                    <label for="Email" class="form-label">Email:</label>
+                    <InputText id="Email" @bind-Value="user.Email" class="form-control"/>
+                    <ValidationMessage For="()=>user.Email" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a role="button" class="btn btn-secondary" href="/">Cancel</a>
             </EditForm>
         </div>
     </div>
@@ -51,12 +52,6 @@ else
     
     private string title = string.Empty;
     private string buttonString = string.Empty;
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        System.Diagnostics.Debug.WriteLine("login page loaded");
-    }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -79,7 +74,7 @@ else
                 Email = string.Empty
             };
             title = "login";
-            buttonString = "login";
+            buttonString = "로그인";
         }
     }
 
@@ -87,17 +82,16 @@ else
     {
         ArgumentNullException.ThrowIfNull(user);
 
-        if (Id is null)
-        {
-            await Client.AddUserAsync(user);
-        }
-        else
-        {
-            user.Id = Id.Value;
-            await Client.UpdateUserAsync(user);
-        }
+         if (Id is null)
+         {
+             await Client.AddUserAsync(user);
+         }
+         else
+         {
+             user.Id = Id.Value;
+             await Client.UpdateUserAsync(user);
+         }
         
-        System.Diagnostics.Debug.WriteLine("OnClick move");
         NavigationManager.NavigateTo("/");
     }
 }
