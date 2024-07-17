@@ -1,33 +1,100 @@
 @page "/gallery"
+@using System.ComponentModel.DataAnnotations
 @inject IJSRuntime js
+@inject IWebHostEnvironment WebHotEviroment
 
 <PageTitle>Gallery</PageTitle>
 
-<h1>Gallery</h1>
+<nav class="navbar navbar-expand-lg bg-body-tertiary mt-2">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Home</a>
+        <a class="navbar-brand" href="/gallery">Gallery</a>
+        <a class="navbar-brand" href="/setting">Setting</a>
+    </div>
+</nav>
 
-<InputFile class="form-control" OnChange="OnFileChange"></InputFile>
+<h3>
+    <small class="text-body-secondary" mt-2>Image Transrator</small>
+</h3>
+<InputFile class="form-control"  accept =".png,.jpg,.jpeg" OnChange="OnFileChange"></InputFile>
+
+<h3>
+    <small class="text-body-secondary" mt-2>Image Selecter</small>
+</h3>
+
+<div class="container" d-flex>
+    <div class="col-sm-4 mx=auto">
+        <EditForm Model="Model" enctype="multipart/form-data" Enhance FormName="file-form" OnSubmit="SaveFileModelAsync">
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <InputText id="Name" @bind-Value="Model.Name" class="form-control"/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">File</label>
+                <InputFile id="File" name ="Model.File" accept =".png,.jpg,.jpeg" class="form-control"/>
+            </div>
+            <div class="mb-3">
+                <input type="submit" class="btn btn-sm btn-success" value="Submit">
+            </div>
+        </EditForm>
+        @if (!string.IsNullOrWhiteSpace(uploadedImageUrl))
+        {
+        <img src="@uploadedImageUrl" class="img-fluid"/>
+        }
+    </div>
+</div>
 
 @code{
 
     async Task OnFileChange(InputFileChangeEventArgs e)
     {
-        if (e.File.Name.Contains(".png"))
+        var format = "image/png";
+
+        var resizeImage = await e.File.RequestImageFileAsync(format, 30, 300);
+        var buffer = new byte[resizeImage.Size];
+        await resizeImage.OpenReadStream().ReadAsync(buffer);
+        var imageData = $"data:{format}base64,{Convert.ToBase64String(buffer)}";
+
+        await js.InvokeVoidAsync("alert", imageData);
+    }
+
+    [SupplyParameterFromForm(FormName = "file-form")]
+    private FileModel Model { get; set; } = new FileModel();
+
+    private string? uploadedImageUrl;
+
+    private async Task SaveFileModelAsync()
+    {
+        if (Model.Name is null)
+            return;
+        
+        var file = Model.File;
+        var folderPath = Path.Combine(WebHotEviroment.WebRootPath, "uploads");
+        Directory.CreateDirectory(folderPath);
+
+        var filePath = Path.Combine(folderPath, file.FileName);
+
+        try
         {
-            var format = "image/png";
-
-            var resizeImage = await e.File.RequestImageFileAsync(format, 30, 300);
-            var buffer = new byte[resizeImage.Size];
-            await resizeImage.OpenReadStream().ReadAsync(buffer);
-            var imageData = $"data:{format}base64,{Convert.ToBase64String(buffer)}";
-
-            await js.InvokeVoidAsync("alert", imageData);
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                using var uploadRileStream = file.OpenReadStream();
+                await uploadRileStream.CopyToAsync(fileStream);
+                uploadedImageUrl = $"/uploads/{file.FileName}";
+            }
         }
-
-        else
+        catch (Exception e)
         {
-            await js.InvokeVoidAsync("alert", "Wrong format selected");
+            Console.WriteLine(e.Message);
         }
+    }
 
+    private class FileModel
+    {
+        [Required(ErrorMessage = "Plaese Set FileName")]
+        public string Name { get; set; }
+        [Required(ErrorMessage = "Choose your image file")]
+        public IFormFile File { get; set; }
     }
 
 }

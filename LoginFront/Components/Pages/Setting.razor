@@ -1,11 +1,13 @@
-﻿@page "/home"
+@page "/setting"
+
+
 @inject UserClient Client
 @inject NavigationManager Navigation
 @using LoginFront.Clients
 @using LoginFront.models
 @attribute [StreamRendering]
 
-<PageTitle>Login</PageTitle>
+<PageTitle>Setting</PageTitle>
 
 @if (users is null)
 {
@@ -23,15 +25,31 @@ else
     
     <table class="table table-scriped table-bordered table-hover mt-3">
         <thead class="table-dark">
-        <th>현재 접속 유저</th>
+        <th>유저 리스트</th>
         <th></th>
         </thead>
-    
+        
+        <thead class="table-dark">
+        <th>Nickname</th>
+        <th>Email</th>
+        </thead>
+
         <tbody>
-        <tr>
-            <td>@ClientInfo.userinfo.Nickname</td>
-            <td>@ClientInfo.userinfo.Email</td>
-        </tr>
+        @foreach (var user in users)
+        {
+            <tr>
+                <td>@user.Nickname</td>
+                <td>@user.Email</td>
+                @* <td> *@
+                @*     <div> *@
+                @*         <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="@GetDeleteMoalId(user)"> *@
+                @*             <i class="bi bi-x-lg"></i> *@
+                @*         </button> *@
+                @*     </div> *@
+                @*     <DeleteModal User="@user"/> *@
+                @* </td> *@
+            </tr>
+        }
         </tbody>
     </table>
     

@@ -25,7 +25,7 @@ public class EntityFrameworkLoginsRepository : ISignRepository
 
     public LoginInfo GetUser(string email)
     {
-        return dbContext.LoginInfos.Find(email);
+        return dbContext.LoginInfos.SingleOrDefault(user => user.Email == email);
     }
 
     public void Create(LoginInfo newInfo)

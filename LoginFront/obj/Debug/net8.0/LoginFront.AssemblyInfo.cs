@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LoginFront")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c75ac403243538cee13a613ada9d608c4c4bd15b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9212a4472793d80c77aae526e15a7c00d93b9ed1")]
 [assembly: System.Reflection.AssemblyProductAttribute("LoginFront")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LoginFront")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
