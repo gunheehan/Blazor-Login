@@ -1,5 +1,10 @@
 @page "/gallery"
 @using System.ComponentModel.DataAnnotations
+@using System.Diagnostics
+@using LoginFront.Model
+@using LoginFront.models
+
+@inject WebRequestModel requestModel
 @inject IJSRuntime js
 @inject IWebHostEnvironment WebHotEviroment
 
@@ -45,6 +50,27 @@
 </div>
 
 @code{
+
+    private string imageToken = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await RequestToken();
+    }
+
+    private async Task RequestToken()
+    {
+        ImageTokenRequest request = new ImageTokenRequest();
+        request.projectName = "MDS";
+        string url = "https://dev-api.startupwing.net/common/board/findApiKey";
+        await requestModel.Get<ImageTokenRequest, ImagTokenResponse>(url, request ,OnResponseToken);
+    }
+
+    private void OnResponseToken(ImagTokenResponse response)
+    {
+        imageToken = response.data;
+        Debug.WriteLine(response);
+    }
 
     async Task OnFileChange(InputFileChangeEventArgs e)
     {

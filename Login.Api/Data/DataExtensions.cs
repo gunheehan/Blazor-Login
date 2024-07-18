@@ -1,5 +1,6 @@
 using Login.Api.Repositories;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.EntityFrameworkCore.Infrastructure;
 
 namespace Login.Api.Data;
 
@@ -20,6 +21,7 @@ public static class DataExtensions
         services.AddSqlServer<LoginAPIContext>(connString)
             .AddScoped<ISignRepository, EntityFrameworkLoginsRepository>();
 
+        //services.AddDbContext<LoginAPIContext>(options => options.UseMySQL());
         return services;
     }
 }

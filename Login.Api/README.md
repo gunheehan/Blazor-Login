@@ -33,3 +33,13 @@ INSERT into LoginAPI.dbo.LoginInfos(Nickname, Email) values ('hea','hea@heahea.c
 EX : UPDATE TABLE1 SET FIELD1 = VALUE1, FIELD2 = VALUE2... WHERE 조건 == 조건식
 UPDATE LoginAPI.dbo.LoginInfos SET Nickname = 'Goen' WHERE Id=1
 ```
+
+### MySql
+```powershell
+컨테이너 설치 : docker run --name loginDB-mysql-container -e MYSQL_ROOT_PASSWORD=salin2017 -d -p 3306:3306 mysql:latest
+컨테이너 접속 : docker exec -it loginDB-mysql-container bash
+관리자 계정 접속 : mysql -u root -p
+dotnet user-secrets set "ConnectionStrings:LoginAPIContext" "Server=localhost; Database=loginDB-mysql-container; UId = root; Pwd=salin2017; TrustServerCertificate=True"
+
+
+```

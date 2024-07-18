@@ -1,5 +1,6 @@
 using LoginFront.Clients;
 using LoginFront.Components;
+using LoginFront.models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ var userApiUrl = builder.Configuration["userApiUrl"] ??
     throw new Exception("UserApiUrl is not set");
 
 builder.Services.AddHttpClient<UserClient>(client => client.BaseAddress = new Uri(userApiUrl));
+builder.Services.AddHttpClient<WebRequestModel>(client => client.BaseAddress = new Uri(userApiUrl));
 
 var app = builder.Build();
 

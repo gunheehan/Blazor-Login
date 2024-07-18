@@ -8,7 +8,7 @@ public class UserClient(HttpClient httpClient)
      => await httpClient.GetFromJsonAsync<UserSummary[]>("Logins") ?? [];
 
     public async Task AddUserAsync(UserSummary user)
-        => await httpClient.PostAsJsonAsync("logins", user);
+        => await httpClient.PostAsJsonAsync("Logins", user);
 
     public async Task UpdateUserAsync(UserSummary updateUser)
         => await httpClient.PutAsJsonAsync($"Logins/{updateUser.Id}", updateUser);
